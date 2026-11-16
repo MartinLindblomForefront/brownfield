@@ -39,8 +39,14 @@ organizational knowledge.
    planning material. Otherwise make a small, explicit assumption consistent
    with the supplied context and code.
 4. Implement the story and its supplied tasks within that scope, following
-   existing patterns. Do not implement neighboring stories or update planning
-   notes unless explicitly requested.
-5. Check the supplied definition of done and run focused tests or other
-   appropriate checks. Report the changes, assumptions, and verification
-   results, including any unmet criteria or unresolved blockers.
+   existing patterns. Work in task-sized increments where practical. Do not
+   implement neighboring stories or update planning notes unless explicitly
+   requested.
+5. For each task's changes ready to commit, use the
+   [commit-task skill](../commit-task/SKILL.md). Follow its requirement to ask
+   the developer which task the commit belongs to, and its checks for scope,
+   size, branching, and pushing. Do not assume the whole story belongs in one
+   task commit. If changes cannot be separated safely, ask the developer.
+6. Check the supplied definition of done and run focused tests or other
+   appropriate checks. Report the changes, assumptions, commits, and
+   verification results, including any unmet criteria or unresolved blockers.
