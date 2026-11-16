@@ -25,6 +25,9 @@ organizational knowledge.
   to supply the story text or an exact selection.
 - If given only a story identifier without its text or location, ask the
   developer for it rather than searching the planning notes.
+- After verification and explicit developer approval, update completion
+  markers only within the assigned story as described below. This is a narrow
+  exception to the planning boundary, not permission to read adjacent stories.
 - Continue to follow applicable repository instructions and higher-priority
   instructions; this context boundary does not override them.
 
@@ -50,3 +53,19 @@ organizational knowledge.
 6. Check the supplied definition of done and run focused tests or other
    appropriate checks. Report the changes, assumptions, commits, and
    verification results, including any unmet criteria or unresolved blockers.
+7. Ask the developer to confirm they are satisfied and approve marking the
+   story complete. Do not treat silence or passing checks alone as approval.
+   If any definition-of-done criterion or supplied task remains unmet, report
+   it and leave the story open.
+8. Once all supplied tasks are complete, the definition of done is verified,
+   and the developer has approved completion, update the assigned story's
+   planning entry:
+   - Change its completed task checkboxes from `- [ ]` to `- [x]`, preserving
+     their identifiers and text.
+   - Strike through the story heading text, preserving its heading level,
+     identifier, and title: `## US-1: Create an accession` becomes
+     `## ~~US-1: Create an accession~~`.
+   - If the exact file or story selection was not supplied, ask for it rather
+     than searching the wider planning notes.
+   - Do not mark unrelated tasks or neighboring stories complete. If committing
+     these status changes, use the commit-task skill rather than bypassing it.
