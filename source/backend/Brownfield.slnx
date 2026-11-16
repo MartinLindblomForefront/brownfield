@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Brownfield.Api.Tests/Brownfield.Api.Tests.csproj" />
   <Project Path="Brownfield.Api/Brownfield.Api.csproj" />
 </Solution>
