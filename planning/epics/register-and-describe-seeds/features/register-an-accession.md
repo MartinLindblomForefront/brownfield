@@ -3,24 +3,24 @@
 Part of [Register and describe seeds](../README.md). These are draft user
 stories, not tracked work items or confirmed requirements.
 
-## US-14: Establish the development foundation
+## ~~US-14: Establish the development foundation~~
 
 As a developer, I want a minimal application skeleton with repeatable build and
 test commands so that I can begin implementing accession registration.
 
-- [ ] T-42: Agree with the developer on the initial technology stack and
+- [x] T-42: Agree with the developer on the initial technology stack and
   prerequisites.
-- [ ] T-43: Scaffold the smallest runnable application using the agreed stack.
-- [ ] T-44: Set up a repeatable build and test command with a basic application
+- [x] T-43: Scaffold the smallest runnable application using the agreed stack.
+- [x] T-44: Set up a repeatable build and test command with a basic application
   smoke test.
-- [ ] T-45: Document prerequisites and commands for building, running, and
+- [x] T-45: Document prerequisites and commands for building, running, and
   testing the application.
 
 ### Definition of done
 
-- The application builds and starts using the documented commands.
-- The documented test command runs the smoke test successfully.
-- Setup instructions identify the prerequisites needed by another developer.
+- [x] The application builds and starts using the documented commands.
+- [x] The documented test command runs the smoke test successfully.
+- [x] Setup instructions identify the prerequisites needed by another developer.
 
 ## US-1: Create an accession
 
