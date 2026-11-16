@@ -9,16 +9,25 @@ As a collection staff member, I want to record a plant's scientific name and
 other known identification details so that the accession can be understood and
 compared with others.
 
+### Expedient constraints
+
+- Store scientific names as free text to avoid introducing reference data in
+  this delivery. Do not add a taxonomy lookup or validate names against an
+  external authority. Ordinary input validation still applies; stored names
+  are not thereby taxonomically verified.
+
 - [ ] T-9: Agree with staff on the plant identification fields and their meanings.
 - [ ] T-10: Persist the scientific name and agreed details on an accession and
   expose them when the record is viewed.
 - [ ] T-11: Test that known identification details survive a save and reload.
+  Include a name not present in any reference catalogue.
 
 ### Definition of done
 
 - The agreed plant identification details can be saved and viewed on an
   accession after reloading it.
 - A focused persistence test passes.
+- Free-text names can be recorded without taxonomy lookup or verification.
 
 ## US-4: Record identification uncertainty
 
