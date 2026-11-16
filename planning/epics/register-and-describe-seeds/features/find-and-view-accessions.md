@@ -8,6 +8,11 @@ stories, not tracked work items or confirmed requirements.
 As a collection staff member, I want to search for accessions by identifier or
 plant name so that I can find the material I need.
 
+### Expedient constraints
+
+- Search the recorded free-text plant names. Taxonomy lookup, synonym
+  resolution, and external name verification are outside this delivery.
+
 - [ ] T-24: Define matching behavior for identifiers and plant names with staff.
 - [ ] T-25: Implement a search action returning matching accessions with their
   identifiers and available plant names.

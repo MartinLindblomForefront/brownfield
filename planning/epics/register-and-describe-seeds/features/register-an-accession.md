@@ -30,6 +30,12 @@ from others.
 
 Prerequisite: US-14 establishes the development foundation.
 
+### Expedient constraints
+
+- Simulated legacy contract: other records refer to the assigned accession
+  identifier. Once assigned, it must remain stable through subsequent edits.
+  Preserve uniqueness; no external legacy integration is required.
+
 - [ ] T-1: Define the accession identifier format and how identifiers are assigned.
 - [ ] T-2: Persist new accession records and enforce identifier uniqueness,
   including concurrent creation.

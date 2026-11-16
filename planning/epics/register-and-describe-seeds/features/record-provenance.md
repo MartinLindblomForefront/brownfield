@@ -25,21 +25,39 @@ collection so that the origin of an accession can be understood.
 As a collection staff member, I want to record the source or donor of an
 accession so that its history can be traced.
 
+### Expedient constraints
+
+- Record donor-supplied provenance as an unverified claim to avoid introducing
+  an external verification process in this delivery. Save and display that
+  status with the details; successful input validation is not verification
+  of their authenticity.
+- Validate external input and use synthetic donor details in local training.
+  No donor integration or external lookup is required.
+
 - [ ] T-18: Agree on the source and donor details to retain, including any privacy
   requirements.
-- [ ] T-19: Allow source or donor details to be saved and viewed on an accession.
-- [ ] T-20: Test that recorded details survive a save and reload.
+- [ ] T-19: Allow source or donor details and their unverified status to be
+  saved and viewed on an accession.
+- [ ] T-20: Test that recorded details and their unverified status survive a
+  save and reload.
 
 ### Definition of done
 
 - The agreed source or donor details can be saved and viewed after reload in
   accordance with agreed privacy requirements.
 - A focused persistence test passes.
+- Donor-supplied details remain visibly unverified after saving and reloading.
 
 ## US-7: Document missing or uncertain provenance
 
 As a collection staff member, I want to document missing or uncertain
 provenance so that colleagues can distinguish it from confirmed information.
+
+### Expedient constraints
+
+- Donor-supplied provenance is initially unverified. Keep that status distinct
+  from missing information and from confirmed information; no external
+  verification workflow is required in this delivery.
 
 - [ ] T-21: Agree on how to record uncertainty or missing information for each
   provenance detail.
