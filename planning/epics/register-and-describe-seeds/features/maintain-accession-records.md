@@ -20,12 +20,23 @@ accession when it becomes available so that the record becomes more complete.
 - [ ] T-32: Test adding missing details without changing unrelated fields.
   Verify that the assigned accession identifier remains unchanged.
 
+### Frontend implementation
+
+- [ ] T-62: Add or extend an accession edit form to fill missing details using
+  the update API without overwriting omitted fields. Keep the identifier
+  read-only, show load/save progress and errors, and refresh displayed data
+  after a successful update.
+- [ ] T-63: Verify adding details and reloading in the browser, including
+  unchanged existing values and identifier, plus a failed save retaining input.
+
 ### Definition of done
 
 - Staff can add identification or provenance details to an existing accession
   without altering fields omitted from the update.
 - Relevant validation is applied, and a focused update test passes.
 - The assigned accession identifier remains unchanged.
+- Staff can add missing details in the frontend without losing existing data;
+  the saved view refreshes and failed saves preserve their input.
 
 ## US-11: Correct existing information
 
@@ -44,6 +55,14 @@ information.
 - [ ] T-35: Test corrections, validation failures, and persistence after reload.
   Verify that the assigned accession identifier remains unchanged.
 
+### Frontend implementation
+
+- [ ] T-64: Extend the accession edit form to correct existing values and
+  certainty indications. Keep the identifier read-only, surface validation
+  and missing-record errors, and refresh the view after a successful update.
+- [ ] T-65: Verify corrections and certainty changes in the browser after
+  reload, including an unchanged identifier and a failed save retaining edits.
+
 ### Definition of done
 
 - Staff can correct existing identification or provenance details and their
@@ -51,3 +70,5 @@ information.
 - Invalid updates and nonexistent accessions produce clear errors, and focused
   tests pass.
 - The assigned accession identifier remains unchanged.
+- Staff can correct details from the frontend and see refreshed saved values;
+  validation and request failures do not discard edits or show success.

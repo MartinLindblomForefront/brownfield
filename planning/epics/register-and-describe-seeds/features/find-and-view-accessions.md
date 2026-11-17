@@ -18,11 +18,21 @@ plant name so that I can find the material I need.
   identifiers and available plant names.
 - [ ] T-26: Test identifier and name searches, including no matches.
 
+### Frontend implementation
+
+- [ ] T-58: Add a labeled search input and API-backed result list showing
+  accession identifiers and available names. Use the agreed matching rules
+  and distinct loading, no-match, and request-error states.
+- [ ] T-59: Verify identifier and free-text name searches in the browser,
+  including keyboard submission, no matches, and a failed request.
+
 ### Definition of done
 
 - Staff can search by identifier or plant name using the agreed matching rules
   and see matching identifiers and available names.
 - No-match results are clear, and focused search tests pass.
+- Staff can search from the frontend; loading and request errors are not
+  mistaken for an empty result.
 
 ## US-9: Browse and view accessions
 
@@ -35,9 +45,20 @@ collection contains.
   unknown or uncertain information.
 - [ ] T-29: Test browsing, viewing a record, and requesting a nonexistent record.
 
+### Frontend implementation
+
+- [ ] T-60: Implement or extend the React list and detail routes for browsing
+  accessions and opening their identification and provenance. Connect to the
+  API and distinguish loading, empty collection, not-found, and error states.
+- [ ] T-61: Verify list-to-detail navigation and direct detail URLs in the
+  browser, including unknown details, an empty list, a missing accession, and
+  request failures.
+
 ### Definition of done
 
 - Staff can browse accessions and open a record to see its identification and
   provenance, including unknown or uncertain information.
 - A nonexistent record is reported clearly, and focused browsing and viewing
   tests pass.
+- The frontend supports browsing and opening records, including direct detail
+  URLs, with distinct empty, missing-record, and request-error feedback.

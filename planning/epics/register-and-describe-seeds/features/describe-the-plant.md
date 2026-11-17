@@ -22,12 +22,22 @@ compared with others.
 - [ ] T-11: Test that known identification details survive a save and reload.
   Include a name not present in any reference catalogue.
 
+### Frontend implementation
+
+- [ ] T-48: Add labeled free-text plant identification inputs and a saved
+  details display to the accession UI, wired to the API. Show pending saves
+  and errors without suggesting taxonomy verification.
+- [ ] T-49: Verify saving and reloading identification in the browser, including
+  a free-text name and a failed save that retains entered values.
+
 ### Definition of done
 
 - The agreed plant identification details can be saved and viewed on an
   accession after reloading it.
 - A focused persistence test passes.
 - Free-text names can be recorded without taxonomy lookup or verification.
+- Staff can enter and view saved plant identification in the frontend without
+  a taxonomy lookup; failed saves remain visible and preserve their input.
 
 ## US-4: Record identification uncertainty
 
@@ -41,9 +51,19 @@ one.
   identification, including when no name is known.
 - [ ] T-14: Test confirmed, uncertain, and unknown identification cases.
 
+### Frontend implementation
+
+- [ ] T-50: Add a labeled certainty control using the agreed values and display
+  the saved indication alongside identification, including an unknown name.
+  Wire it to the API with save progress and error feedback.
+- [ ] T-51: Verify confirmed, uncertain, and unknown identification in the
+  browser after saving and reloading, including a failed save.
+
 ### Definition of done
 
 - Staff can record and view the agreed certainty indication, including when
   the plant name is unknown.
 - Confirmed, uncertain, and unknown cases are distinguishable and covered by
   passing tests.
+- The frontend makes the agreed certainty states distinguishable without
+  requiring a name for the unknown case and reports save failures.
