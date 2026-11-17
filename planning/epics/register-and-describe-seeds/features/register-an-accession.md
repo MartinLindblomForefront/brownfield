@@ -60,9 +60,19 @@ when registering an accession so that colleagues can recognize the material.
 - [ ] T-7: Validate required fields and expose actionable validation errors.
 - [ ] T-8: Test creation with valid, missing, and optional identification details.
 
+### Frontend implementation
+
+- [ ] T-46: Add a labeled Mantine registration form using the agreed basic
+  fields and the accession creation API. Show submission progress, field
+  errors, and the assigned identifier on success; retain input on failure.
+- [ ] T-47: Verify the form in the browser with required and optional fields,
+  keyboard submission, successful creation, and a failed request.
+
 ### Definition of done
 
 - The agreed basic identification fields can be saved during registration.
 - Missing required fields produce actionable errors; optional fields can be
   omitted.
 - Focused validation and persistence tests pass.
+- Staff can register an accession from the frontend and see its assigned
+  identifier; a failed save does not discard their input or show success.
