@@ -18,11 +18,11 @@ test commands so that I can begin implementing accession registration.
 
 ### Definition of done
 
-- [x] The application builds and starts using the documented commands.
-- [x] The documented test command runs the smoke test successfully.
-- [x] Setup instructions identify the prerequisites needed by another developer.
+- The application builds and starts using the documented commands.
+- The documented test command runs the smoke test successfully.
+- Setup instructions identify the prerequisites needed by another developer.
 
-## US-1: Create an accession
+## ~~US-1: Create an accession~~
 
 As a collection staff member, I want to create an accession record with a
 unique identifier so that each addition to the collection can be distinguished
@@ -36,12 +36,12 @@ Prerequisite: US-14 establishes the development foundation.
   identifier. Once assigned, it must remain stable through subsequent edits.
   Preserve uniqueness; no external legacy integration is required.
 
-- [ ] T-1: Define the accession identifier format and how identifiers are assigned.
-- [ ] T-2: Persist new accession records and enforce identifier uniqueness,
+- [x] T-1: Define the accession identifier format and how identifiers are assigned.
+- [x] T-2: Persist new accession records and enforce identifier uniqueness,
   including concurrent creation.
-- [ ] T-3: Provide a create action that returns the assigned identifier or a
+- [x] T-3: Provide a create action that returns the assigned identifier or a
   meaningful error.
-- [ ] T-4: Test successful creation and duplicate identifier rejection.
+- [x] T-4: Test successful creation and duplicate identifier rejection.
 
 ### Definition of done
 
