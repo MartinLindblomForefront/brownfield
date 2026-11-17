@@ -1,12 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Shouldly;
 
 namespace Brownfield.Api.Tests;
 
-public class HealthEndpointTests(WebApplicationFactory<Program> factory)
-    : IClassFixture<WebApplicationFactory<Program>>
+public class HealthEndpointTests(TestApiFactory factory) : IClassFixture<TestApiFactory>
 {
     [Fact]
     public async Task GetHealth_ReturnsOkAndStatus()
