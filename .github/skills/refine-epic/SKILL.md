@@ -40,6 +40,22 @@ code or tracked work items, unless the developer explicitly asks otherwise.
   necessary for consistency. Avoid expanding neighboring work beyond the
   requested scope.
 
+## Frontend scope
+
+- For each new or refined open story, include a `Frontend implementation`
+  section. For user-facing behavior, add uniquely identified tasks for the UI,
+  API integration, and focused browser verification. Include relevant loading,
+  empty, validation, error, and success states.
+- Extend the story's definition of done with observable frontend outcomes,
+  including persistence after reload where relevant. Follow existing frontend
+  instructions and reuse current components and flows rather than planning
+  duplicate screens or inventing a new stack.
+- If no frontend work is needed, state that explicitly in the section with a
+  short reason; do not manufacture UI tasks for backend-only or enabling work.
+- Keep each story independently understandable, including its frontend scope
+  and constraints. Do not reopen or alter completed stories unless explicitly
+  requested.
+
 ## Expedient constraints
 
 - Offer realistic delivery constraints when useful, but obtain developer
@@ -73,6 +89,8 @@ code or tracked work items, unless the developer explicitly asks otherwise.
   notes before assigning new numbers; do not renumber or reuse existing IDs.
   Use the same identifier for an item in its overview and detail file.
 - Verify that requested stories have tasks and a definition of done, that
+  each open story being refined has a frontend section with corresponding
+  tasks and completion criteria or a justified no-frontend statement, that
   identifiers are unique per item, and that new or changed links resolve.
 - Summarize the resulting notes and call out assumptions, open decisions, and
   any requested work that remains incomplete.
