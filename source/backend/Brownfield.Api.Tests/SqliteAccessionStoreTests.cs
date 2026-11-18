@@ -14,8 +14,22 @@ public class SqliteAccessionStoreTests
         try
         {
             await store.InitializeAsync(cancellationToken);
-            (await store.TryCreateAsync("same-id", cancellationToken)).ShouldBeTrue();
-            (await store.TryCreateAsync("same-id", cancellationToken)).ShouldBeFalse();
+            (
+                await store.TryCreateAsync(
+                    "same-id",
+                    "Meadow grass",
+                    staffNotes: null,
+                    cancellationToken
+                )
+            ).ShouldBeTrue();
+            (
+                await store.TryCreateAsync(
+                    "same-id",
+                    "Meadow grass",
+                    staffNotes: null,
+                    cancellationToken
+                )
+            ).ShouldBeFalse();
         }
         finally
         {
@@ -57,6 +71,66 @@ public class SqliteAccessionStoreTests
         }
     }
 
+    [Fact]
+    public async Task InitializeAsync_AddsIdentificationColumnsToExistingDatabase()
+    {
+        var store = CreateStore(out var databasePath);
+        var cancellationToken = TestContext.Current.CancellationToken;
+        try
+        {
+            await using (var connection = new SqliteConnection(
+                $"Data Source={databasePath};Pooling=False"
+            ))
+            {
+                await connection.OpenAsync(cancellationToken);
+                await using var command = connection.CreateCommand();
+                command.CommandText =
+                    """
+                    CREATE TABLE Accessions (Id TEXT NOT NULL PRIMARY KEY);
+                    INSERT INTO Accessions (Id) VALUES ('existing-id');
+                    """;
+                await command.ExecuteNonQueryAsync(cancellationToken);
+            }
+
+            await store.InitializeAsync(cancellationToken);
+            (
+                await store.TryCreateAsync(
+                    "new-id",
+                    "Meadow grass",
+                    "Collected from bag 12.",
+                    cancellationToken
+                )
+            ).ShouldBeTrue();
+
+            await using var verification = new SqliteConnection(
+                $"Data Source={databasePath};Pooling=False"
+            );
+            await verification.OpenAsync(cancellationToken);
+            await using var query = verification.CreateCommand();
+            query.CommandText =
+                """
+                SELECT ShortDescription, StaffNotes
+                FROM Accessions
+                WHERE Id = $id;
+                """;
+            query.Parameters.AddWithValue("$id", "new-id");
+            await using var reader = await query.ExecuteReaderAsync(cancellationToken);
+            (await reader.ReadAsync(cancellationToken)).ShouldBeTrue();
+            reader.GetString(0).ShouldBe("Meadow grass");
+            reader.GetString(1).ShouldBe("Collected from bag 12.");
+
+            await reader.CloseAsync();
+            query.CommandText = "SELECT COUNT(*) FROM Accessions WHERE Id = 'existing-id';";
+            Convert
+                .ToInt32(await query.ExecuteScalarAsync(cancellationToken))
+                .ShouldBe(1);
+        }
+        finally
+        {
+            File.Delete(databasePath);
+        }
+    }
+
     private static SqliteAccessionStore CreateStore(out string databasePath)
     {
         databasePath = Path.Combine(
@@ -70,5 +144,5 @@ public class SqliteAccessionStoreTests
         SqliteAccessionStore store,
         string id,
         CancellationToken cancellationToken
-    ) => store.TryCreateAsync(id, cancellationToken);
+    ) => store.TryCreateAsync(id, "Meadow grass", staffNotes: null, cancellationToken);
 }
