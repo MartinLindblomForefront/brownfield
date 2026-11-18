@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Brownfield.Api.Domain;
+using Microsoft.Data.Sqlite;
 using Microsoft.AspNetCore.Mvc;
 using Shouldly;
 
@@ -9,15 +10,15 @@ namespace Brownfield.Api.Tests;
 public class AccessionCreationTests
 {
     [Fact]
-    public async Task PostAccession_ReturnsCreatedCanonicalUuid()
+    public async Task PostAccession_ReturnsCreatedCanonicalUuidAndPersistsRequiredDescription()
     {
         using var factory = new TestApiFactory();
         using var client = factory.CreateClient();
         var cancellationToken = TestContext.Current.CancellationToken;
 
-        using var response = await client.PostAsync(
+        using var response = await client.PostAsJsonAsync(
             "/api/accessions",
-            content: null,
+            new { shortDescription = "  Meadow grass from bag 12  " },
             cancellationToken
         );
 
@@ -28,6 +29,93 @@ public class AccessionCreationTests
         result.ShouldNotBeNull();
         Guid.TryParseExact(result!.Id, "D", out var id).ShouldBeTrue();
         id.ToString("D").ShouldBe(result.Id);
+
+        await using var connection = new SqliteConnection(factory.ConnectionString);
+        await connection.OpenAsync(cancellationToken);
+        await using var command = connection.CreateCommand();
+        command.CommandText =
+            "SELECT ShortDescription, StaffNotes FROM Accessions WHERE Id = $id;";
+        command.Parameters.AddWithValue("$id", result.Id);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        (await reader.ReadAsync(cancellationToken)).ShouldBeTrue();
+        reader.GetString(0).ShouldBe("Meadow grass from bag 12");
+        reader.IsDBNull(1).ShouldBeTrue();
+    }
+
+    [Fact]
+    public async Task PostAccession_PersistsOptionalStaffNotes()
+    {
+        using var factory = new TestApiFactory();
+        using var client = factory.CreateClient();
+        var cancellationToken = TestContext.Current.CancellationToken;
+
+        using var response = await client.PostAsJsonAsync(
+            "/api/accessions",
+            new
+            {
+                shortDescription = "Meadow grass",
+                staffNotes = "Labels are damaged."
+            },
+            cancellationToken
+        );
+
+        response.StatusCode.ShouldBe(HttpStatusCode.Created);
+        var result = await response.Content.ReadFromJsonAsync<CreateAccessionResponse>(
+            cancellationToken
+        );
+        result.ShouldNotBeNull();
+
+        await using var connection = new SqliteConnection(factory.ConnectionString);
+        await connection.OpenAsync(cancellationToken);
+        await using var command = connection.CreateCommand();
+        command.CommandText = "SELECT StaffNotes FROM Accessions WHERE Id = $id;";
+        command.Parameters.AddWithValue("$id", result!.Id);
+        (await command.ExecuteScalarAsync(cancellationToken)).ShouldBe("Labels are damaged.");
+    }
+
+    [Fact]
+    public async Task PostAccession_WhenDescriptionIsMissingOrInvalid_ReturnsActionableErrors()
+    {
+        using var factory = new TestApiFactory();
+        using var client = factory.CreateClient();
+        var cancellationToken = TestContext.Current.CancellationToken;
+
+        foreach (var description in new string?[] { null, "", "   ", new string('x', 201) })
+        {
+            using var response = await client.PostAsJsonAsync(
+                "/api/accessions",
+                new { shortDescription = description },
+                cancellationToken
+            );
+
+            response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+            var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(
+                cancellationToken
+            );
+            problem.ShouldNotBeNull();
+            problem!.Errors.ContainsKey("shortDescription").ShouldBeTrue();
+        }
+    }
+
+    [Fact]
+    public async Task PostAccession_WhenStaffNotesExceedLimit_ReturnsActionableError()
+    {
+        using var factory = new TestApiFactory();
+        using var client = factory.CreateClient();
+        var cancellationToken = TestContext.Current.CancellationToken;
+
+        using var response = await client.PostAsJsonAsync(
+            "/api/accessions",
+            new { shortDescription = "Meadow grass", staffNotes = new string('x', 2001) },
+            cancellationToken
+        );
+
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(
+            cancellationToken
+        );
+        problem.ShouldNotBeNull();
+        problem!.Errors.ContainsKey("staffNotes").ShouldBeTrue();
     }
 
     [Fact]
@@ -38,9 +126,9 @@ public class AccessionCreationTests
         using var client = factory.CreateClient();
         var cancellationToken = TestContext.Current.CancellationToken;
 
-        using var created = await client.PostAsync(
+        using var created = await client.PostAsJsonAsync(
             "/api/accessions",
-            content: null,
+            new { shortDescription = "Meadow grass" },
             cancellationToken
         );
         created.StatusCode.ShouldBe(HttpStatusCode.Created);
@@ -49,9 +137,9 @@ public class AccessionCreationTests
         );
         result!.Id.ShouldBe(id);
 
-        using var duplicate = await client.PostAsync(
+        using var duplicate = await client.PostAsJsonAsync(
             "/api/accessions",
-            content: null,
+            new { shortDescription = "Meadow grass" },
             cancellationToken
         );
         duplicate.StatusCode.ShouldBe(HttpStatusCode.Conflict);
@@ -75,9 +163,9 @@ public class AccessionCreationTests
             Enumerable
                 .Range(0, 8)
                 .Select(_ =>
-                    client.PostAsync(
+                    client.PostAsJsonAsync(
                         "/api/accessions",
-                        content: null,
+                        new { shortDescription = "Meadow grass" },
                         cancellationToken
                     )
                 )
