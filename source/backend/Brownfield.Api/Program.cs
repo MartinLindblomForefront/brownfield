@@ -21,13 +21,51 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapPost(
     "/api/accessions",
     async (
+        CreateAccessionRequest? request,
         IAccessionIdGenerator idGenerator,
         SqliteAccessionStore store,
         CancellationToken cancellationToken
     ) =>
     {
+        var errors = new Dictionary<string, string[]>();
+        if (request is null)
+        {
+            errors["request"] = ["A request body is required."];
+            return Results.ValidationProblem(errors);
+        }
+
+        var shortDescription = request.ShortDescription?.Trim();
+        if (string.IsNullOrEmpty(shortDescription))
+        {
+            errors["shortDescription"] = ["Enter a short description."];
+        }
+        else if (shortDescription.Length > 200)
+        {
+            errors["shortDescription"] = ["Use 200 characters or fewer."];
+        }
+
+        if (request.StaffNotes?.Length > 2000)
+        {
+            errors["staffNotes"] = ["Use 2,000 characters or fewer."];
+        }
+
+        if (errors.Count > 0)
+        {
+            return Results.ValidationProblem(errors);
+        }
+
+        var staffNotes = string.IsNullOrWhiteSpace(request.StaffNotes)
+            ? null
+            : request.StaffNotes;
         var id = idGenerator.Generate();
-        if (!await store.TryCreateAsync(id, cancellationToken))
+        if (
+            !await store.TryCreateAsync(
+                id,
+                shortDescription!,
+                staffNotes,
+                cancellationToken
+            )
+        )
         {
             return Results.Problem(
                 statusCode: StatusCodes.Status409Conflict,
@@ -42,3 +80,5 @@ app.MapPost(
 app.Run();
 
 public partial class Program { }
+
+public sealed record CreateAccessionRequest(string? ShortDescription, string? StaffNotes);
