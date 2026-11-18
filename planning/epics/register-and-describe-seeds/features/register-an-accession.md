@@ -1,4 +1,4 @@
-# F-1: Register an accession
+# ~~F-1: Register an accession~~
 
 Part of [Register and describe seeds](../README.md). These are draft user
 stories, not tracked work items or confirmed requirements.
@@ -50,22 +50,22 @@ Prerequisite: US-14 establishes the development foundation.
   failures are communicated clearly.
 - Focused creation and uniqueness tests pass.
 
-## US-2: Record basic identification
+## ~~US-2: Record basic identification~~
 
 As a collection staff member, I want to record basic identifying information
 when registering an accession so that colleagues can recognize the material.
 
-- [ ] T-5: Agree with staff on the basic fields and which are required at creation.
-- [ ] T-6: Add those fields to accession creation and persist their values.
-- [ ] T-7: Validate required fields and expose actionable validation errors.
-- [ ] T-8: Test creation with valid, missing, and optional identification details.
+- [x] T-5: Agree with staff on the basic fields and which are required at creation.
+- [x] T-6: Add those fields to accession creation and persist their values.
+- [x] T-7: Validate required fields and expose actionable validation errors.
+- [x] T-8: Test creation with valid, missing, and optional identification details.
 
 ### Frontend implementation
 
-- [ ] T-46: Add a labeled Mantine registration form using the agreed basic
+- [x] T-46: Add a labeled Mantine registration form using the agreed basic
   fields and the accession creation API. Show submission progress, field
   errors, and the assigned identifier on success; retain input on failure.
-- [ ] T-47: Verify the form in the browser with required and optional fields,
+- [x] T-47: Verify the form in the browser with required and optional fields,
   keyboard submission, successful creation, and a failed request.
 
 ### Definition of done
